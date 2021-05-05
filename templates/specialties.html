@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Specialties
+{% endblock %}
+
+{% block body %}
+
+<section class="py-5 text-center container">
+    <div class="row py-lg-5">
+        <div class="col-lg-6 col-md-8 mx-auto">
+            <h1 class="fw-light">Which category are you interested in?</h1>
+            <p class="lead text-muted">Our clinic offers a choice of the best specialists in four specialties.</p>
+            <p>
+                <a href="/specialties/pediatrician" class="btn btn-outline-info my-2">pediatrician</a>
+                <a href="/specialties/ophthalmologist" class="btn btn-outline-info my-2">ophthalmologist</a>
+                <a href="/specialties/gynecologist" class="btn btn-outline-info my-2">gynecologist</a>
+                <a href="/specialties/gastroenterologist" class="btn btn-outline-info my-2">gastroenterologist</a>
+            </p>
+        </div>
+    </div>
+</section>
+
+
+
+<div class="container mt-5">
+    <h1>Specialties</h1>
+    {% if doctors|length > 0 %}
+
+    {% for el in doctors %}
+
+    <div class="bg-light p-5 rounded alert d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+        <img src="{{ url_for('static', filename=el.photo) }}" width="300" height="300">
+        <h3>{{ el.fio }}<br><br><p class="font-weight-light">Specialty:<br>{{ el.specialty }}</p></h3>
+        <a class="btn btn-outline-dark btn-lg" href="/specialties/{{ el.id }}" role="button">See more</a>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p>No doctors</p>
+{% endif %}
+
+{% endblock %}

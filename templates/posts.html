@@ -11,15 +11,16 @@ News
     {% if articles|length > 0 %}
 
     {% for el in articles %}
-    <div class="alert alert-info">
+    <div class="bg-light p-5 rounded alert">
         <h2>{{ el.title }}</h2>
-        <p>{{ el.intro }}</p>
+        <p class="lead">{{ el.intro }}</p>
         <p><b>Date: {{ el.date.date() }}</b></p>
-        <a href="/posts/{{ el.id }}" class="btn btn-warning">More info</a>
+        <a class="btn btn-lg btn-primary" href="/posts/{{ el.id }}" role="button">See more</a>
     </div>
     {% endfor %}
-    {% else %}
-    <p>No news</p>
-    {% endif %}
 </div>
+{% else %}
+<p>No news</p>
+{% endif %}
+
 {% endblock %}
