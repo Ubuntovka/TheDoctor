@@ -20,6 +20,7 @@ class Doctor(db.Model):
     position = db.Column(db.String(300), nullable=False)
     experience = db.Column(db.Integer, nullable=False)
     photo = db.Column(db.LargeBinary)
+    working_time = db.Column(db.String(100))
 
     def __repr__(self):
         return '<Doctor %r>' % self.id
@@ -35,6 +36,3 @@ class Record(db.Model):
 
     def __repr__(self):
         return '<Record %r>' % self.id
-
-
-db.create_all()
