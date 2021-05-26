@@ -11,4 +11,4 @@ migrate = Migrate(app, db)
 
 from app import models, views
 
-db.create_all()
+# db.create_all()
