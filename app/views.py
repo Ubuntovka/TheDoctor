@@ -1,6 +1,8 @@
-from flask import render_template, request, redirect, jsonify, url_for
+from flask import render_template, request, redirect, jsonify, url_for, flash
 from flask_wtf import FlaskForm
 from wtforms import SelectField
+from email_validator import validate_email, EmailNotValidError
+import re
 
 from app import app, models, db
 
@@ -19,8 +21,13 @@ def posts():
 
 @app.route('/posts/<int:id>')
 def post_detail(id):
-    article = models.Article.query.get(id)
+    article = models.Article.query.filter_by(id=id).first_or_404()
     return render_template("post_detail.html", article=article)
+
+
+@app.route('/price')
+def price():
+    return render_template('price.html')
 
 
 @app.route('/specialties')
@@ -35,8 +42,13 @@ def specialties(sort_key=None):
 
 @app.route('/specialties/<int:id>')
 def doctor_detail(id):
-    doctor = models.Doctor.query.get(id)
+    doctor = models.Doctor.query.filter_by(id=id).first_or_404()
     return render_template("doctor_detail.html", doctor=doctor)
+
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 
 # Dependence of the doctor on the specialty in the application for an appointment!
@@ -55,10 +67,31 @@ def record():
         name = request.form['name']
         phone_number = request.form['phone_number']
         email = request.form['email']
-        the_doctor = models.Doctor.query.filter_by(fio=form.doctor.data).first()
-        doctor_id = the_doctor.id
 
-        new_record = models.Record(name=name, phone_number=phone_number, email=email, doctor_id=doctor_id)
+        if len(name) > 100 or len(name) == 0:
+            flash('Enter a name between 0 and 100 characters.')
+
+        if not re.match(r'\+[3][8][0]\d{8}', phone_number) or not len(phone_number) == 13:
+            phone_number_error = 'Enter a valid phone number. Format: +380123456789.'
+            flash('The phone number is not valid.')
+            return render_template('application.html', form=form, phone_number_error=phone_number_error)
+
+        try:
+            # Validate.
+            valid = validate_email(email)
+
+            # Update with the normalized form.
+            email = valid.email
+        except EmailNotValidError as e:
+            email_error = str(e)
+            flash('The email is not valid.')
+            return render_template('application.html', form=form, email_error=email_error)
+        if form.doctor.data:
+            the_doctor = models.Doctor.query.filter_by(fio=form.doctor.data).first()
+            doctor_id = the_doctor.id
+            new_record = models.Record(name=name, phone_number=phone_number, email=email, doctor_id=doctor_id)
+        else:
+            new_record = models.Record(name=name, phone_number=phone_number, email=email)
 
         try:
             db.session.add(new_record)
@@ -80,6 +113,5 @@ def doctor(specialty):
         list_of_doctors.append(doctor_obj)
 
     return jsonify({'doctors': list_of_doctors})
-
 
 # END

@@ -10,19 +10,26 @@ Recording
     <div class="col-md-8 order-md-1">
         <h4 class="mb-3">Billing address</h4>
         <form method="POST">
-
+            <p>Enter your name:</p>
             <div class="row">
-
                 <div class="col-md-6 mb-3">
-                    <input type="text" name="name" id="name" class="form-control" placeholder="Введите имя"><br>
+                    <input type="text" name="name" id="name" class="form-control" placeholder="Name"><br>
                 </div>
             </div>
 
+            <p>Enter a valid phone number:</p>
             <div class="mb-3">
                 <input type="tel" name="phone_number" id="phone_number" class="form-control"
-                       placeholder="+380111111111"><br>
+                       placeholder="+380________"><br>
+                {% if phone_number_error %}
+                <p><font color="red">{{ phone_number_error }}</font></p>
+                {% endif %}
             </div>
 
+            <p>Enter a valid email address:</p>
+            {% if email_error %}
+            <p><font color="red">{{ email_error }}</font></p>
+            {% endif %}
             <div class="mb-3">
                 <input type="email" name="email" id="email" class="form-control" placeholder="you@example.com"><br>
             </div>
@@ -54,6 +61,17 @@ Recording
             </button>
 
         </form>
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class=flashes>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+
         <script>
         var specialty_select = document.getElementById("specialty");
         var doctor_select = document.getElementById("doctor");
@@ -74,6 +92,10 @@ Recording
             });
 
         }
+
+
+
+
         </script>
 
         <script>
@@ -84,6 +106,10 @@ Recording
             if(!notChecked) submit.disabled = '';
             else submit.disabled = 'disabled';
         }
+
+
+
+
         </script>
 
 

@@ -30,7 +30,7 @@ Specialties
     {% for el in doctors %}
 
     <div class="bg-light p-5 rounded alert d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-        <img src="{{ url_for('static', filename=el.photo) }}" width="300" height="300">
+        <img src="{{ url_for('static', filename=el.photo) }}" width="300" height="300" alt="doctor">
         <h3>{{ el.fio }}<br><br><p class="font-weight-light">Specialty:<br>{{ el.specialty }}</p></h3>
         <a class="btn btn-outline-dark btn-lg" href="/specialties/{{ el.id }}" role="button">See more</a>
     </div>
