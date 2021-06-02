@@ -27,7 +27,7 @@ Go to your favorite web browser and open: http://127.0.0.1:5000/
 * SQLAlchemy - ORM (Object Relational Mapper)
 * Flask-Migrate - database migrations
 * Flask-WTF - simplifies forms
-* itsdangerous - helps with user management, especially tokens
+* unittest - testing frameworks
 
 This application is written using Python 3.9.  The database used is PostgreSQL.
 
