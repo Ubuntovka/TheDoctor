@@ -52,5 +52,9 @@ class ClinicFirstTest(unittest.TestCase):
         response = self.app.get('/posts/52', follow_redirects=True)
         self.assertEqual(response.status_code, 404)
 
-
-
+    def test_posts_delete(self):
+        self.add_articles()
+        response = self.app.get('/posts/1/del', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'some title for at2', response.data)
+        self.assertNotIn(b'some title for at1', response.data)

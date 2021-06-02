@@ -25,6 +25,53 @@ def post_detail(id):
     return render_template("post_detail.html", article=article)
 
 
+@app.route('/posts/<int:id>/del')
+def post_delete(id):
+    article = models.Article.query.get_or_404(id)
+    try:
+        db.session.delete(article)
+        db.session.commit()
+        return redirect('/posts')
+    except:
+        return "An error occurred while deleting the article."
+
+
+@app.route('/posts/<int:id>/update', methods=['POST', 'GET'])
+def post_update(id):
+    article = models.Article.query.get(id)
+    if request.method == "POST":
+        article.title = request.form['title']
+        article.intro = request.form['intro']
+        article.text = request.form['text']
+
+        try:
+            db.session.commit()
+            return redirect('/posts')
+        except:
+            return "An error occurred while editing the article."
+    else:
+        return render_template("post_update.html", article=article)
+
+
+@app.route('/create-article', methods=['POST', 'GET'])
+def create_article():
+    if request.method == "POST":
+        title = request.form['title']
+        intro = request.form['intro']
+        text = request.form['text']
+
+        article = models.Article(title=title, intro=intro, text=text)
+
+        try:
+            db.session.add(article)
+            db.session.commit()
+            return redirect('/posts')
+        except:
+            return "An error occurred while adding an article."
+    else:
+        return render_template("create-article.html")
+
+
 @app.route('/price')
 def price():
     return render_template('price.html')
