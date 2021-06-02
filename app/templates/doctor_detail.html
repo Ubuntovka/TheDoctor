@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Dr. {{ doctor.fio }}
+{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1>{{ doctor.fio }}</h1>
+
+
+    <div class="p-5 rounded alert d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4">
+        <img src="{{ url_for('static', filename=doctor.photo) }}" width="300" height="300">
+        <h3><p class="font-weight-light">Position:</p>{{ doctor.position }}<br><br>
+            <p class="font-weight-light">Work experience in the specialty:</p>{{ doctor.experience }}
+        </h3>
+
+        <a class="btn btn-lg btn-primary" href="/application" role="button">Application<br>for recording</a>
+    </div>
+</div>
+{% endblock %}

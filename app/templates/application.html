@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Recording
+{% endblock %}
+
+{% block body %}
+
+<div class="container mt-5">
+    <div class="col-md-8 order-md-1">
+        <h4 class="mb-3">Billing address</h4>
+        <form method="POST">
+            <p>Enter your name:</p>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <input type="text" name="name" id="name" class="form-control" placeholder="Name"><br>
+                </div>
+            </div>
+
+            <p>Enter a valid phone number:</p>
+            <div class="mb-3">
+                <input type="tel" name="phone_number" id="phone_number" class="form-control"
+                       placeholder="+380________"><br>
+                {% if phone_number_error %}
+                <p><font color="red">{{ phone_number_error }}</font></p>
+                {% endif %}
+            </div>
+
+            <p>Enter a valid email address:</p>
+            {% if email_error %}
+            <p><font color="red">{{ email_error }}</font></p>
+            {% endif %}
+            <div class="mb-3">
+                <input type="email" name="email" id="email" class="form-control" placeholder="you@example.com"><br>
+            </div>
+
+
+            {{ form.csrf_token }}
+
+            <div class="row">
+                <div class="col-md-5 mb-3">
+                    {{ form.specialty }}
+                </div>
+
+                <div class="col-md-5 mb-3">
+                    {{ form.doctor }}
+                </div>
+            </div>
+
+
+            <hr class="mb-4">
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" onclick="check();" value="" id="agree_or_disagree"
+                       autocomplete="off">
+                <label class="custom-control-label" for="agree_or_disagree">I agree to the processing of personal
+                    data.</label>
+            </div>
+            <hr class="mb-4">
+            <button class="submit btn btn-primary btn-lg btn-block" name="submit" disabled="" type="submit">
+                Continue to checkout
+            </button>
+
+        </form>
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class=flashes>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+
+        <script>
+        var specialty_select = document.getElementById("specialty");
+        var doctor_select = document.getElementById("doctor");
+
+        specialty_select.onchange = function() {
+            specialty = specialty_select.value;
+            fetch('/application/doctor/' + specialty).then(function(response) {
+                response.json().then(function(data) {
+                    var optionHTML = '';
+
+                    for(var doctor of data.doctors) {
+                        optionHTML += '<option>' + doctor.fio + '</option>';
+                    }
+
+                    doctor_select.innerHTML = optionHTML;
+
+                });
+            });
+
+        }
+
+
+
+
+        </script>
+
+        <script>
+        function check() {
+            var submit = document.getElementsByName('submit')[0];
+            var notChecked = false;
+            if (!document.getElementById('agree_or_disagree').checked) notChecked = true;
+            if(!notChecked) submit.disabled = '';
+            else submit.disabled = 'disabled';
+        }
+
+
+
+
+        </script>
+
+
+    </div>
+</div>
+
+{% endblock %}
