@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Login
+{% endblock %}
+
+{% block body %}
+
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<ul class=flashes>
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+
+
+<div class="container mt-5">
+    <h5>You are not registred?</h5>
+    <h5><a href="/register" class="nav-link link-dark">Register</a></h5>
+
+    <div class="col-md-8 order-md-2">
+        <h4 class="mb-3">Login</h4>
+        <form method="POST">
+            <div class="row">
+                <div class="col-md-5 mb-3">
+                    <input type="email" name="login" class="form-control" placeholder="email"><br>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-5 mb-3">
+                    <input type="password" name="password" class="form-control" placeholder="password"><br>
+                </div>
+            </div>
+            <button class="btn btn-primary" type="submit">
+                Continue to checkout
+            </button>
+
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+<!--<form method="POST">-->
+<!--    <table>-->
+<!--        <tr>-->
+<!--            <td>Login</td>-->
+<!--            <td><input type="text" name="login"></td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--            <td>Password</td>-->
+<!--            <td><input type="password" name="password"></td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--            <td><a href="{{ url_for('register') }}">Register</a></td>-->
+<!--            <td><input type="submit" value="Login"></td>-->
+<!--        </tr>-->
+<!--        <a href="{{ url_for('logout') }}">Exit</a>-->
+<!--    </table>-->
+<!--</form>-->
+

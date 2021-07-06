@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Register
+{% endblock %}
+
+{% block body %}
+
+
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
+
+<div class="container mt-5">
+    <div class="col-md-8 order-md-2">
+        <h4 class="mb-3">Registration</h4>
+        <form method="POST">
+
+            <div class="row">
+                <div class="col-md-5 mb-3">
+                    <input type="text" name="name" class="form-control" placeholder="name"><br>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-5 mb-3">
+                    <input type="email" name="login" class="form-control" placeholder="email"><br>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-5 mb-3">
+                    <input type="text" name="tel" class="form-control" placeholder="phone number"><br>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-5 mb-3">
+                    <input type="password" name="password" class="form-control" placeholder="password"><br>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-5 mb-3">
+                    <input type="password" name="password2" class="form-control" placeholder="password2"><br>
+                </div>
+            </div>
+            <button class="btn btn-primary" type="submit">
+                Continue to checkout
+            </button>
+
+        </form>
+    </div>
+</div>
+
+
+
+
+<!--<form method="POST">-->
+<!--    <table>-->
+<!--        <tr>-->
+<!--            <td>Login</td>-->
+<!--            <td><input type="email" name="login"></td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--            <td>Password</td>-->
+<!--            <td><input type="password" name="password"></td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--            <td>Password retype</td>-->
+<!--            <td><input type="password" name="password2"></td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--            <td><a href="{{ url_for('login_page') }}">Login</a></td>-->
+<!--            <td><input type="submit" value="Register"></td>-->
+<!--        </tr>-->
+<!--    </table>-->
+<!--</form>-->
+
+{% endblock %}

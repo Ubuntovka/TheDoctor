@@ -8,6 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
     <title>{% block title %}{% endblock %}</title>
+
 </head>
 
 <body>
@@ -25,8 +26,9 @@
     </ul>
 
     <div class="col-md-3 text-end">
-        <button type="button" style="color:Black;" class="btn btn-outline-secondary me-2">Login</button>
+        <a href="/login" class="btn btn-outline-success me-2">Login</a>
         <a href="/application" class="btn btn-primary">Application for recording</a>
+        <a href="{{ url_for('logout') }}" class="btn btn-outline-danger">Exit</a>
     </div>
 </header>
 {% block body %}{% endblock %}

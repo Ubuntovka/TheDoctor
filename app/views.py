@@ -1,10 +1,12 @@
 from flask import render_template, request, redirect, jsonify, url_for, flash
+from flask_login import login_user, login_required, logout_user
 from flask_wtf import FlaskForm
+from werkzeug.security import check_password_hash, generate_password_hash
 from wtforms import SelectField
 from email_validator import validate_email, EmailNotValidError
 import re
 
-from app import app, models, db
+from app import app, models, db, manager
 
 
 @app.route('/')
@@ -26,6 +28,7 @@ def post_detail(id):
 
 
 @app.route('/posts/<int:id>/del')
+@login_required
 def post_delete(id):
     article = models.Article.query.get_or_404(id)
     try:
@@ -37,6 +40,7 @@ def post_delete(id):
 
 
 @app.route('/posts/<int:id>/update', methods=['POST', 'GET'])
+@login_required
 def post_update(id):
     article = models.Article.query.get(id)
     if request.method == "POST":
@@ -54,6 +58,7 @@ def post_update(id):
 
 
 @app.route('/create-article', methods=['POST', 'GET'])
+@login_required
 def create_article():
     if request.method == "POST":
         title = request.form['title']
@@ -98,6 +103,72 @@ def about():
     return render_template('about.html')
 
 
+# For authorization and registration
+@manager.user_loader
+def load_user(user_id):
+    return models.Users.query.get(user_id)
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login_page():
+    login = request.form.get('login')
+    password = request.form.get('password')
+
+    if login and password:
+        user = models.Users.query.filter_by(login=login).first()
+
+        if user and check_password_hash(user.password, password):
+            login_user(user)
+            redirect('/home')
+        else:
+            flash('Login or password is not correct')
+
+    else:
+        flash('Please fill login and password fields')
+
+    return render_template('login.html')
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        login = request.form.get('login')
+        password = request.form.get('password')
+        password2 = request.form.get('password2')
+        name = request.form.get('name')
+        phone_number = request.form.get('tel')
+        if not (login or password or password2):
+            flash('Please, fill all fields')
+        elif password != password2:
+            flash('Passwords are not equal!')
+        else:
+            hash_pwd = generate_password_hash(password)
+            new_user = models.Users(login=login, password=hash_pwd, name=name, phone_number=phone_number)
+            db.session.add(new_user)
+            db.session.commit()
+
+            return redirect(url_for('login_page'))
+
+    return render_template('register.html')
+
+
+@app.route('/logout', methods=['GET', 'POST'])
+@login_required
+def logout():
+    logout_user()
+    return redirect('/home')
+
+
+# @app.after_request
+# def redirect_to_signin(response):
+#     if response.status_code == 401:
+#         return redirect(url_for('login_page') + '?next=' + request.url)
+#     return response
+
+
+# End authorization and registration block
+
+
 # Dependence of the doctor on the specialty in the application for an appointment!
 class Form(FlaskForm):
     specialty = SelectField('specialty',
@@ -133,6 +204,7 @@ def record():
             email_error = str(e)
             flash('The email is not valid.')
             return render_template('application.html', form=form, email_error=email_error)
+
         if form.doctor.data:
             the_doctor = models.Doctor.query.filter_by(fio=form.doctor.data).first()
             doctor_id = the_doctor.id
