@@ -5,7 +5,7 @@ import unittest
 TEST_DB = 'test.db'
 
 
-class ClinicFirstTest(unittest.TestCase):
+class ClinicSpecialtiesTest(unittest.TestCase):
 
     def setUp(self):
         app.config['TESTING'] = True

@@ -4,7 +4,7 @@ import unittest
 TEST_DB = 'test.db'
 
 
-class ClinicFirstTest(unittest.TestCase):
+class ClinicViewTest(unittest.TestCase):
 
     def setUp(self):
         app.config['TESTING'] = True
@@ -39,6 +39,14 @@ class ClinicFirstTest(unittest.TestCase):
 
     def test_specialties_page(self):
         response = self.app.get('/specialties', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+
+    def test_login_page(self):
+        response = self.app.get('/login', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+
+    def test_register_page(self):
+        response = self.app.get('/register', follow_redirects=True)
         self.assertEqual(response.status_code, 200)
 
     def test_valid_application(self):

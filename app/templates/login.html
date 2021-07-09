@@ -11,7 +11,7 @@ Login
 {% if messages %}
 <ul class=flashes>
     {% for message in messages %}
-    <li>{{ message }}</li>
+    <p>{{ message }}</p>
     {% endfor %}
 </ul>
 {% endif %}
@@ -19,6 +19,9 @@ Login
 
 
 <div class="container mt-5">
+    {% if current_user.is_authenticated %}
+    <h3 style= "color:MediumSeaGreen;">Hi {{ current_user.name }}!</h3><br>
+    {% endif %}
     <h5>You are not registred?</h5>
     <h5><a href="/register" class="nav-link link-dark">Register</a></h5>
 

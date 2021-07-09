@@ -5,12 +5,13 @@ import unittest
 TEST_DB = 'test.db'
 
 
-class ClinicFirstTest(unittest.TestCase):
+class ClinicArticlesTest(unittest.TestCase):
 
     def setUp(self):
         app.config['TESTING'] = True
         app.config['WTF_CSRF_ENABLED'] = False
         app.config['DEBUG'] = False
+        app.config['LOGIN_DISABLED'] = True
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'
         self.app = app.test_client()
         models.db.drop_all()
@@ -18,7 +19,8 @@ class ClinicFirstTest(unittest.TestCase):
 
     # executed after each test
     def tearDown(self):
-        pass
+        db.session.remove()
+        db.drop_all()
 
     ########################
     #### helper methods ####

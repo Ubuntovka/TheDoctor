@@ -6,7 +6,18 @@ Home
 
 {% block body %}
 
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<ul class=flashes>
+    {% for message in messages %}
+    <p>{{ message }}</p>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+
 <div class="container marketing">
+
     <h1><br><q><i>Health for the whole family.</i></q><br><br><br></h1>
     <!-- Three columns of text below the carousel -->
     <div class="row">

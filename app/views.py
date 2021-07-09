@@ -104,9 +104,6 @@ def about():
 
 
 # For authorization and registration
-@manager.user_loader
-def load_user(user_id):
-    return models.Users.query.get(user_id)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -116,15 +113,16 @@ def login_page():
 
     if login and password:
         user = models.Users.query.filter_by(login=login).first()
-
-        if user and check_password_hash(user.password, password):
-            login_user(user)
-            redirect('/home')
+        if user:
+            if check_password_hash(user.password, password):
+                login_user(user)
+                flash('You were logged in')
+            else:
+                flash('Invalid password')
         else:
-            flash('Login or password is not correct')
-
+            flash('Invalid login')
     else:
-        flash('Please fill login and password fields')
+        flash('Please fill pass login andword fields')
 
     return render_template('login.html')
 
@@ -156,6 +154,7 @@ def register():
 @login_required
 def logout():
     logout_user()
+    flash('You were logged out')
     return redirect('/home')
 
 

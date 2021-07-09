@@ -66,3 +66,13 @@ class Users(db.Model, UserMixin):
     login = db.Column(db.String(100), nullable=False, unique=True)
     password = db.Column(db.String(255), nullable=False)
 
+    def __init__(self, name=None, phone_number=None, login=None, password=None):
+        self.name = name
+        self.phone_number = phone_number
+        self.login = login
+        self.password = password
+
+
+@manager.user_loader
+def load_user(user_id):
+    return Users.query.get(user_id)
