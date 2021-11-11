@@ -1,7 +1,7 @@
 import sys
 import os
 
-print('Creating database tables for Family Recipes app...')
+print('Creating database tables for TheDoctor app...')
 
 if os.path.abspath(os.curdir) not in sys.path:
     print('...missing directory in PYTHONPATH... added!')
